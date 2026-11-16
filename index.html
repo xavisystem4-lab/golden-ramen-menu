@@ -53,10 +53,10 @@ for(let i=1;i<=N;i++){
   const d=document.createElement('div');
   d.className='page'+((i===1||i===N)?' hard':'');
   if(i===1||i===N) d.setAttribute('data-density','hard');
-  d.innerHTML=`<img src="p${pad(i)}.jpg?v=1794816700" alt="Página ${i} del menú Golden Ramen" ${i>4?'loading="lazy"':''}>`;
+  d.innerHTML=`<img src="p${pad(i)}.jpg?v=1794816830" alt="Página ${i} del menú Golden Ramen" ${i>4?'loading="lazy"':''}>`;
   book.appendChild(d);
   const t=document.createElement('button'); t.className='th'; t.setAttribute('aria-label','Ir a la página '+i);
-  t.innerHTML=`<img src="t${pad(i)}.jpg?v=1794816700" alt="">`; t.onclick=()=>pf&&pf.flip(i-1);
+  t.innerHTML=`<img src="t${pad(i)}.jpg?v=1794816830" alt="">`; t.onclick=()=>pf&&pf.flip(i-1);
   thumbs.appendChild(t);
 }
 let pf=null; let lastW=innerWidth; addEventListener('resize',()=>{ if(Math.abs(innerWidth-lastW)>80){ location.reload(); } });

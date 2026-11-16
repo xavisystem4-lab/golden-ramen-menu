@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Golden Ramen — Revista Digital del Menú</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Aladin&family=Mulish:wght@600;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Aladin&family=Mulish:wght@500;700;800;900&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;height:100%;height:100dvh;background:#0b0b0b;color:#f3f3f3;font-family:Mulish,sans-serif;overflow:hidden}
@@ -14,12 +14,17 @@ header{height:64px;display:flex;align-items:center;justify-content:space-between
 .brand{font-family:Aladin,serif;font-size:30px;color:#FFC20E;letter-spacing:.02em}
 .brand small{font-family:Mulish,sans-serif;font-size:11px;letter-spacing:.4em;color:#EFA92B;margin-left:12px;vertical-align:middle}
 .count{font-weight:900;font-size:14px;color:#EFA92B;letter-spacing:.1em}
-#stage{position:relative;height:calc(100% - 64px - 104px);display:flex;align-items:center;justify-content:center;padding:14px 70px}
+#stage{position:relative;height:calc(100% - 64px - 104px);display:flex;align-items:center;justify-content:center;padding:14px 70px;overflow:hidden}
 #book{margin:0 auto;max-height:100%}
-#stage{overflow:hidden}
 .page{background:#1a1a1a;overflow:hidden}
-.page img{width:100%;height:100%;object-fit:cover;display:block;user-select:none;-webkit-user-drag:none}
+.page .pi{width:100%;height:100%;object-fit:cover;display:block;user-select:none;-webkit-user-drag:none;pointer-events:none}
 .page.hard{background:#111}
+.hs{position:absolute;border-radius:14px;cursor:pointer;z-index:3;background:transparent;border:2px solid transparent;transition:border-color .2s,box-shadow .2s,background .2s;-webkit-tap-highlight-color:transparent}
+.hs:hover,.hs:focus-visible{border-color:rgba(255,194,14,.9);box-shadow:0 0 0 3px rgba(255,194,14,.25),0 0 22px rgba(255,194,14,.35);background:rgba(255,194,14,.06);outline:none}
+.hs .tapme{position:absolute;left:6px;top:6px;width:22px;height:22px;border-radius:50%;background:#FFC20E;color:#1a1a1a;font-weight:900;font-size:16px;display:flex;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(0,0,0,.6);opacity:.0;transform:scale(.6);transition:all .25s}
+.page.pulse .hs .tapme{animation:pulse 2.4s ease-in-out 1}
+@keyframes pulse{0%{opacity:0;transform:scale(.6)}25%{opacity:1;transform:scale(1)}75%{opacity:1;transform:scale(1)}100%{opacity:0;transform:scale(.6)}}
+.hs:hover .tapme{opacity:1;transform:scale(1)}
 .nav{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;border:1.5px solid #FFC20E;background:rgba(14,14,14,.75);color:#FFC20E;font-size:24px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;transition:background .2s}
 .nav:hover{background:#FFC20E;color:#111}
 #prev{left:12px}#next{right:12px}
@@ -28,42 +33,118 @@ footer{height:104px;border-top:1px solid rgba(239,169,43,.35);display:flex;align
 .th img{width:100%;height:100%;object-fit:cover;display:block}
 .th.on,.th:hover{border-color:#FFC20E;opacity:1}
 .hint{position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:12px;color:#9a8a5a;letter-spacing:.08em}
-#loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Aladin,serif;font-size:28px;color:#FFC20E}
-@media (max-width:700px){header{height:42px;padding:0 12px}.brand{font-size:20px}.brand small{display:none}.count{font-size:12px}footer,.hint{display:none}#stage{height:calc(100dvh - 42px);padding:0}.nav{width:36px;height:36px;font-size:18px;background:rgba(14,14,14,.55);top:auto;bottom:14px;transform:none}#prev{left:10px}#next{right:10px}}
+/* INTRO */
+#intro{position:fixed;inset:0;z-index:50;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;background:radial-gradient(ellipse at 50% 45%,#2d2208 0%,#0c0c0c 60%,#050505 100%);transition:opacity .8s ease,visibility .8s}
+#intro.out{opacity:0;visibility:hidden}
+.ring{position:relative;width:min(62vw,62vh,420px);aspect-ratio:1}
+.ring svg{position:absolute;inset:-6%;width:112%;height:112%;animation:spin 3.2s cubic-bezier(.6,.05,.3,1) both}
+.ring circle{fill:none;stroke-linecap:round}
+.c1{stroke:#EFA92B;stroke-width:7;stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 1.6s .2s ease forwards}
+.c2{stroke:#FFC20E;stroke-width:2.5;stroke-dasharray:1000;stroke-dashoffset:1000;animation:draw 1.8s .5s ease forwards;opacity:.7}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes spin{from{transform:rotate(-120deg)}to{transform:rotate(0)}}
+.ring img{position:absolute;inset:14%;width:72%;height:72%;object-fit:contain;opacity:0;transform:scale(.4) rotate(-25deg);filter:drop-shadow(0 0 0 rgba(255,194,14,0));animation:logoIn 1.1s .9s cubic-bezier(.2,1.4,.4,1) forwards,glow 2.4s 2s ease-in-out infinite}
+@keyframes logoIn{to{opacity:1;transform:scale(1) rotate(0)}}
+@keyframes glow{0%,100%{filter:drop-shadow(0 0 6px rgba(255,194,14,.25))}50%{filter:drop-shadow(0 0 28px rgba(255,194,14,.75))}}
+.shine{position:absolute;inset:0;border-radius:50%;overflow:hidden;pointer-events:none}
+.shine::after{content:"";position:absolute;top:-30%;left:-60%;width:40%;height:160%;background:linear-gradient(100deg,transparent,rgba(255,240,200,.45),transparent);transform:rotate(18deg);animation:sweep 1.4s 2s ease-in-out}
+@keyframes sweep{from{left:-60%}to{left:130%}}
+#intro .word{width:min(80vw,440px);opacity:0;transform:translateY(18px);animation:up .9s 1.7s ease forwards}
+#intro .tag{font-weight:900;letter-spacing:.55em;font-size:12px;color:#EFA92B;opacity:0;animation:up .8s 2.1s ease forwards}
+#intro button{margin-top:14px;font-family:Mulish,sans-serif;font-weight:900;font-size:15px;letter-spacing:.2em;color:#1a1a1a;background:#FFC20E;border:0;border-radius:999px;padding:12px 30px;cursor:pointer;opacity:0;animation:up .8s 2.5s ease forwards;box-shadow:0 8px 24px rgba(255,194,14,.3)}
+@keyframes up{to{opacity:1;transform:none}}
+/* MODAL */
+#modal{position:fixed;inset:0;z-index:40;display:flex;align-items:center;justify-content:center;padding:18px;background:rgba(0,0,0,.72);backdrop-filter:blur(4px);opacity:0;visibility:hidden;transition:opacity .25s,visibility .25s}
+#modal.on{opacity:1;visibility:visible}
+.card{position:relative;width:min(560px,100%);max-height:calc(100dvh - 36px);overflow:auto;background:linear-gradient(160deg,#211a08,#121212 45%);border:1.5px solid #EFA92B;border-radius:22px;box-shadow:0 30px 70px rgba(0,0,0,.7);transform:translateY(24px) scale(.96);transition:transform .3s cubic-bezier(.2,1.2,.4,1)}
+#modal.on .card{transform:none}
+.card .ph{display:flex;align-items:center;justify-content:center;padding:22px 22px 6px;background:radial-gradient(closest-side,rgba(255,194,14,.25),transparent)}
+.card .ph img{max-width:100%;max-height:44vh;object-fit:contain;filter:drop-shadow(0 16px 22px rgba(0,0,0,.7))}
+.card .bd{padding:6px 26px 26px}
+.card h2{margin:6px 0 4px;font-family:Mulish,sans-serif;font-weight:900;font-size:28px;line-height:1.15;color:#FFC20E}
+.card .ln{width:56px;height:3px;background:#EFA92B;border-radius:2px;margin:8px 0 14px}
+.card p{margin:0 0 14px;font-size:18px;line-height:1.55;font-weight:500;color:#F4F4F4}
+.card .rows{display:grid;gap:8px;margin-bottom:14px}
+.card .row{display:flex;justify-content:space-between;gap:12px;font-size:18px;font-weight:700;padding:8px 12px;border-radius:10px;background:rgba(255,255,255,.05)}
+.card .row b{color:#FFC20E;font-weight:900}
+.card .price{display:inline-block;font-weight:900;font-size:30px;color:#1a1a1a;background:#FFC20E;border-radius:14px;padding:6px 18px}
+.card .x{position:absolute;top:10px;right:10px;width:42px;height:42px;border-radius:50%;border:1.5px solid #FFC20E;background:rgba(10,10,10,.8);color:#FFC20E;font-size:22px;font-weight:900;cursor:pointer;z-index:2}
+@media (max-width:700px){header{height:42px;padding:0 12px}.brand{font-size:20px}.brand small{display:none}.count{font-size:12px}footer,.hint{display:none}#stage{height:calc(100dvh - 42px);padding:0}.nav{width:36px;height:36px;font-size:18px;background:rgba(14,14,14,.55);top:auto;bottom:14px;transform:none}#prev{left:10px}#next{right:10px}.card h2{font-size:24px}.card p,.card .row{font-size:17px}}
 </style>
 </head>
 <body>
+<div id="intro" role="dialog" aria-label="Bienvenida">
+  <div class="ring">
+    <svg viewBox="0 0 200 200" aria-hidden="true"><circle class="c1" cx="100" cy="100" r="92" transform="rotate(-90 100 100)"/><circle class="c2" cx="100" cy="100" r="84" transform="rotate(60 100 100)"/></svg>
+    <img src="logo.webp" alt="Golden Ramen Sushi &amp; Ramen">
+    <div class="shine"></div>
+  </div>
+  <img class="word" src="word.webp" alt="Golden Ramen Restaurant Bar">
+  <div class="tag">SUSHI · RAMEN · BAR</div>
+  <button id="enter" type="button">VER MENÚ</button>
+</div>
 <header>
   <div class="brand">Golden Ramen<small>MENÚ · REVISTA DIGITAL</small></div>
   <div class="count" id="count">1 / 22</div>
 </header>
 <div id="stage">
-  <div id="loading">Abriendo el menú…</div>
   <button class="nav" id="prev" aria-label="Página anterior">‹</button>
   <div id="book"></div>
   <button class="nav" id="next" aria-label="Página siguiente">›</button>
-  <div class="hint">Arrastra la esquina de la hoja, usa las flechas o toca una miniatura</div>
+  <div class="hint">Toca un platillo para ver el detalle · Arrastra la esquina para pasar la hoja</div>
 </div>
 <footer id="thumbs"></footer>
+<div id="modal" aria-hidden="true"><div class="card" role="dialog" aria-modal="true" aria-labelledby="mt"><button class="x" id="mx" aria-label="Cerrar">✕</button><div class="ph"><img id="mi" alt=""></div><div class="bd"><h2 id="mt"></h2><div class="ln"></div><p id="md"></p><div class="rows" id="mr"></div><span class="price" id="mp"></span></div></div></div>
+<script src="data.js?v=1794817842"></script>
 <script src="page-flip.browser.js"></script>
 <script>
-const N=22, book=document.getElementById('book'), thumbs=document.getElementById('thumbs');
+const N=22, book=document.getElementById('book'), thumbs=document.getElementById('thumbs'), V='1794817842';
 const pad=n=>String(n).padStart(2,'0');
+const M=window.MENU||[];
 for(let i=1;i<=N;i++){
   const d=document.createElement('div');
   d.className='page'+((i===1||i===N)?' hard':'');
   if(i===1||i===N) d.setAttribute('data-density','hard');
-  d.innerHTML=`<img src="p${pad(i)}.jpg?v=1794817712" alt="Página ${i} del menú Golden Ramen" ${i>4?'loading="lazy"':''}>`;
+  d.innerHTML=`<img class="pi" src="p${pad(i)}.jpg?v=${V}" alt="Página ${i} del menú Golden Ramen" ${i>4?'loading="lazy"':''}>`;
+  (M[i-1]||[]).forEach((it,k)=>{
+    const h=document.createElement('button'); h.type='button'; h.className='hs'; h.setAttribute('aria-label','Ver '+it.n);
+    h.style.left=(it.b[0]*100)+'%'; h.style.top=(it.b[1]*100)+'%'; h.style.width=(it.b[2]*100)+'%'; h.style.height=(it.b[3]*100)+'%';
+    h.innerHTML='<span class="tapme">+</span>';
+    h.addEventListener('pointerdown',e=>{h._x=e.clientX;h._y=e.clientY;});
+    h.addEventListener('click',e=>{e.stopPropagation(); if(h._x!=null&&Math.hypot(e.clientX-h._x,e.clientY-h._y)>12)return; openItem(it);});
+    d.appendChild(h);
+  });
   book.appendChild(d);
   const t=document.createElement('button'); t.className='th'; t.setAttribute('aria-label','Ir a la página '+i);
-  t.innerHTML=`<img src="t${pad(i)}.jpg?v=1794817712" alt="">`; t.onclick=()=>pf&&pf.flip(i-1);
+  t.innerHTML=`<img src="t${pad(i)}.jpg?v=${V}" alt="">`; t.onclick=()=>pf&&pf.flip(i-1);
   thumbs.appendChild(t);
 }
+const modal=document.getElementById('modal');
+function openItem(it){
+  const im=document.getElementById('mi');
+  if(it.i){im.src='i/'+it.i+'.webp?v='+V; im.alt=it.n; im.parentElement.style.display='';} else im.parentElement.style.display='none';
+  document.getElementById('mt').textContent=it.n;
+  const md=document.getElementById('md'); md.textContent=it.d||''; md.style.display=it.d?'':'none';
+  const rows=(it.r||[]).filter(r=>!r.startsWith(it.n));
+  const mr=document.getElementById('mr'); mr.innerHTML='';
+  rows.forEach(r=>{const m=r.match(/^(.*?)\s*(\$\s?\d[\d,.]*)$/); const div=document.createElement('div'); div.className='row'; div.innerHTML=m?`<span></span><b></b>`:'<span></span>'; div.firstChild.textContent=m?m[1]:r; if(m) div.lastChild.textContent=m[2]; mr.appendChild(div);});
+  mr.style.display=rows.length?'':'none';
+  const mp=document.getElementById('mp'); const pr=(it.p||[]).filter(x=>x&&!/PRECIO/.test(x));
+  mp.innerHTML=''; pr.forEach((x,k)=>{ if(k) mp.appendChild(document.createElement('br')); mp.appendChild(document.createTextNode(x)); });
+  mp.style.display=pr.length?'':'none';
+  modal.classList.add('on'); modal.setAttribute('aria-hidden','false'); document.getElementById('mx').focus();
+}
+function closeItem(){modal.classList.remove('on'); modal.setAttribute('aria-hidden','true');}
+document.getElementById('mx').onclick=closeItem;
+modal.addEventListener('click',e=>{if(e.target===modal)closeItem();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeItem();});
 let pf=null; let lastW=innerWidth; addEventListener('resize',()=>{ if(Math.abs(innerWidth-lastW)>80){ location.reload(); } });
 function setOn(idx){
   document.getElementById('count').textContent=(idx+1)+' / '+N;
   [...thumbs.children].forEach((t,k)=>t.classList.toggle('on',k===idx||(pf&&pf.getOrientation()==='landscape'&&idx>0&&k===idx+1)));
   const a=thumbs.children[idx]; if(a) a.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+  document.querySelectorAll('#book .page').forEach(p=>p.classList.remove('pulse'));
+  setTimeout(()=>{document.querySelectorAll('.stf__item').forEach((p,k)=>{ if(k===idx||k===idx+1){ const pg=p.classList.contains('page')?p:p.querySelector('.page'); (pg||p).classList.add('pulse'); }});},950);
 }
 function fit(){
   const st=document.getElementById('stage'); const mob=innerWidth<=700; const H=st.clientHeight-(mob?0:40), W=st.clientWidth-(mob?0:150);
@@ -71,12 +152,13 @@ function fit(){
   book.style.width=Math.floor(two?pw*2:pw)+'px';
 }
 function init(){
-  document.getElementById('loading').remove(); fit();
+  fit();
   pf=new St.PageFlip(book,{
     width:794,height:1123,size:'stretch',
     minWidth:260,maxWidth:794,minHeight:368,maxHeight:1123,
     maxShadowOpacity:0.6,showCover:true,mobileScrollSupport:false,
-    flippingTime:900,usePortrait:true,drawShadow:true,autoSize:true
+    flippingTime:900,usePortrait:true,drawShadow:true,autoSize:true,
+    clickEventForward:true,disableFlipByClick:true,useMouseEvents:true
   });
   pf.loadFromHTML(document.querySelectorAll('#book .page'));
   pf.on('flip',e=>setOn(e.data));
@@ -84,8 +166,12 @@ function init(){
 }
 document.getElementById('prev').onclick=()=>pf&&pf.flipPrev();
 document.getElementById('next').onclick=()=>pf&&pf.flipNext();
-document.addEventListener('keydown',e=>{if(!pf)return;if(e.key==='ArrowRight')pf.flipNext();if(e.key==='ArrowLeft')pf.flipPrev();});
-if(window.St) init(); else window.addEventListener('load',()=>{ if(window.St) init(); else document.getElementById('loading').textContent='No se pudo cargar el visor.'; });
+document.addEventListener('keydown',e=>{if(!pf||modal.classList.contains('on'))return;if(e.key==='ArrowRight')pf.flipNext();if(e.key==='ArrowLeft')pf.flipPrev();});
+const intro=document.getElementById('intro');
+function closeIntro(){intro.classList.add('out');}
+document.getElementById('enter').onclick=closeIntro;
+setTimeout(closeIntro,5200);
+if(window.St) init(); else window.addEventListener('load',()=>{ if(window.St) init(); });
 </script>
 </body>
 </html>

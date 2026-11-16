@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Golden Ramen — Revista Digital del Menú</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Aladin&family=Mulish:wght@600;800;900&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;height:100dvh;background:#0b0b0b;color:#f3f3f3;font-family:Mulish,sans-serif;overflow:hidden}
+body{background:radial-gradient(ellipse at 50% 40%,#2a2108 0%,#0e0e0e 55%,#060606 100%)}
+header{height:64px;display:flex;align-items:center;justify-content:space-between;padding:0 22px;border-bottom:1px solid rgba(239,169,43,.35)}
+.brand{font-family:Aladin,serif;font-size:30px;color:#FFC20E;letter-spacing:.02em}
+.brand small{font-family:Mulish,sans-serif;font-size:11px;letter-spacing:.4em;color:#EFA92B;margin-left:12px;vertical-align:middle}
+.count{font-weight:900;font-size:14px;color:#EFA92B;letter-spacing:.1em}
+#stage{position:relative;height:calc(100% - 64px - 104px);display:flex;align-items:center;justify-content:center;padding:14px 70px}
+#book{margin:0 auto;max-height:100%}
+#stage{overflow:hidden}
+.page{background:#1a1a1a;overflow:hidden}
+.page img{width:100%;height:100%;object-fit:cover;display:block;user-select:none;-webkit-user-drag:none}
+.page.hard{background:#111}
+.nav{position:absolute;top:50%;transform:translateY(-50%);width:50px;height:50px;border-radius:50%;border:1.5px solid #FFC20E;background:rgba(14,14,14,.75);color:#FFC20E;font-size:24px;font-weight:900;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:5;transition:background .2s}
+.nav:hover{background:#FFC20E;color:#111}
+#prev{left:12px}#next{right:12px}
+footer{height:104px;border-top:1px solid rgba(239,169,43,.35);display:flex;align-items:center;gap:8px;overflow-x:auto;padding:10px 16px;scrollbar-width:thin}
+.th{flex:0 0 auto;width:56px;height:79px;border-radius:4px;overflow:hidden;border:2px solid transparent;cursor:pointer;opacity:.6;transition:all .2s;background:#222;padding:0}
+.th img{width:100%;height:100%;object-fit:cover;display:block}
+.th.on,.th:hover{border-color:#FFC20E;opacity:1}
+.hint{position:absolute;bottom:4px;left:0;right:0;text-align:center;font-size:12px;color:#9a8a5a;letter-spacing:.08em}
+#loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:Aladin,serif;font-size:28px;color:#FFC20E}
+@media (max-width:700px){header{height:42px;padding:0 12px}.brand{font-size:20px}.brand small{display:none}.count{font-size:12px}footer,.hint{display:none}#stage{height:calc(100dvh - 42px);padding:0}.nav{width:36px;height:36px;font-size:18px;background:rgba(14,14,14,.55);top:auto;bottom:14px;transform:none}#prev{left:10px}#next{right:10px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">Golden Ramen<small>MENÚ · REVISTA DIGITAL</small></div>
+  <div class="count" id="count">1 / 22</div>
+</header>
+<div id="stage">
+  <div id="loading">Abriendo el menú…</div>
+  <button class="nav" id="prev" aria-label="Página anterior">‹</button>
+  <div id="book"></div>
+  <button class="nav" id="next" aria-label="Página siguiente">›</button>
+  <div class="hint">Arrastra la esquina de la hoja, usa las flechas o toca una miniatura</div>
+</div>
+<footer id="thumbs"></footer>
+<script src="page-flip.browser.js"></script>
+<script>
+const N=22, book=document.getElementById('book'), thumbs=document.getElementById('thumbs');
+const pad=n=>String(n).padStart(2,'0');
+for(let i=1;i<=N;i++){
+  const d=document.createElement('div');
+  d.className='page'+((i===1||i===N)?' hard':'');
+  if(i===1||i===N) d.setAttribute('data-density','hard');
+  d.innerHTML=`<img src="p${pad(i)}.jpg" alt="Página ${i} del menú Golden Ramen" ${i>4?'loading="lazy"':''}>`;
+  book.appendChild(d);
+  const t=document.createElement('button'); t.className='th'; t.setAttribute('aria-label','Ir a la página '+i);
+  t.innerHTML=`<img src="t${pad(i)}.jpg" alt="">`; t.onclick=()=>pf&&pf.flip(i-1);
+  thumbs.appendChild(t);
+}
+let pf=null; let lastW=innerWidth; addEventListener('resize',()=>{ if(Math.abs(innerWidth-lastW)>80){ location.reload(); } });
+function setOn(idx){
+  document.getElementById('count').textContent=(idx+1)+' / '+N;
+  [...thumbs.children].forEach((t,k)=>t.classList.toggle('on',k===idx||(pf&&pf.getOrientation()==='landscape'&&idx>0&&k===idx+1)));
+  const a=thumbs.children[idx]; if(a) a.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});
+}
+function fit(){
+  const st=document.getElementById('stage'); const mob=innerWidth<=700; const H=st.clientHeight-(mob?0:40), W=st.clientWidth-(mob?0:150);
+  const two=W>H*0.95; const pw=Math.min(two?W/2:W, H*794/1123);
+  book.style.width=Math.floor(two?pw*2:pw)+'px';
+}
+function init(){
+  document.getElementById('loading').remove(); fit();
+  pf=new St.PageFlip(book,{
+    width:794,height:1123,size:'stretch',
+    minWidth:260,maxWidth:794,minHeight:368,maxHeight:1123,
+    maxShadowOpacity:0.6,showCover:true,mobileScrollSupport:false,
+    flippingTime:900,usePortrait:true,drawShadow:true,autoSize:true
+  });
+  pf.loadFromHTML(document.querySelectorAll('#book .page'));
+  pf.on('flip',e=>setOn(e.data));
+  setOn(0);
+}
+document.getElementById('prev').onclick=()=>pf&&pf.flipPrev();
+document.getElementById('next').onclick=()=>pf&&pf.flipNext();
+document.addEventListener('keydown',e=>{if(!pf)return;if(e.key==='ArrowRight')pf.flipNext();if(e.key==='ArrowLeft')pf.flipPrev();});
+if(window.St) init(); else window.addEventListener('load',()=>{ if(window.St) init(); else document.getElementById('loading').textContent='No se pudo cargar el visor.'; });
+</script>
+</body>
+</html>

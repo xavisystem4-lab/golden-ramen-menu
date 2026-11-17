@@ -16,7 +16,7 @@ body.zh{font-family:'Noto Sans SC',Mulish,sans-serif}
 body.lock{overflow:hidden}
 img{display:block;max-width:100%}
 button{font-family:inherit}
-.flag{display:block;width:100%;height:100%;border-radius:4px;overflow:hidden}
+.flag{display:block;width:100%;height:100%;border-radius:4px;overflow:hidden;object-fit:cover;box-shadow:0 0 0 1px rgba(255,255,255,.15)}
 #intro{position:fixed;inset:0;z-index:60;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;background:radial-gradient(ellipse at 50% 45%,#2d2208 0%,#0c0c0c 60%,#050505 100%);transition:opacity .9s ease,visibility .9s;padding:20px;text-align:center}
 #intro.out{opacity:0;visibility:hidden}
 .ring{position:relative;width:min(60vw,44vh,380px);aspect-ratio:1}
@@ -33,7 +33,7 @@ button{font-family:inherit}
 #intro .tap{margin-top:6px;font-weight:900;font-size:14px;letter-spacing:.3em;color:#1a1a1a;background:var(--gold);border:0;border-radius:999px;padding:13px 30px;box-shadow:0 8px 24px rgba(255,194,14,.3);animation:tp 1.6s ease-in-out infinite;cursor:pointer}
 @keyframes tp{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
 .iflags{display:flex;gap:14px;margin-top:4px}
-.iflags button{width:58px;height:40px;padding:0;border:2px solid transparent;border-radius:8px;background:none;cursor:pointer;opacity:.55;transition:all .2s}
+.iflags button{width:64px;height:44px;padding:0;border:2px solid transparent;border-radius:8px;background:none;cursor:pointer;opacity:.55;transition:all .2s}
 .iflags button.on{opacity:1;border-color:var(--gold);transform:scale(1.1);box-shadow:0 0 16px rgba(255,194,14,.45)}
 #intro.go .lg{animation:logoIn 1.3s cubic-bezier(.2,1.3,.4,1) forwards,breathe 2.4s 1.4s ease-in-out infinite}
 @keyframes logoIn{0%{transform:scale(.35) rotate(-200deg);opacity:.2}100%{transform:scale(1) rotate(0);opacity:1}}
@@ -264,18 +264,14 @@ footer .dev button{font-weight:800;color:#1a1a1a;background:var(--gold);border:0
 </div>
 <div class="talk" id="talk"><div class="eq"><i></i><i></i><i></i><i></i></div><span id="talkt"></span></div>
 <div class="toast" id="toast"></div>
-<script src="data.js?v=1794875440"></script>
-<script src="i18n.js?v=1794875440"></script>
+<script src="data.js?v=1794878764"></script>
+<script src="i18n.js?v=1794878764"></script>
 <script>
-const V='1794875440', S=window.SECS||[], L=window.I18N;
+const V='1794878764', S=window.SECS||[], L=window.I18N;
 const $=id=>document.getElementById(id);
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
 const store={get(k,d){try{const v=localStorage.getItem(k);return v===null?d:v}catch(e){return d}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
-function star(cx,cy,r,rot){let p=[];for(let i=0;i<10;i++){const a=Math.PI/5*i-Math.PI/2+(rot||0),rr=i%2?r*.38:r;p.push((cx+rr*Math.cos(a)).toFixed(2)+','+(cy+rr*Math.sin(a)).toFixed(2))}return `<polygon points="${p.join(' ')}" fill="#FFDE00"/>`}
-const FLAG={
- zh:`<svg class="flag" viewBox="0 0 30 20" preserveAspectRatio="none"><rect width="30" height="20" fill="#EE1C25"/>${star(5,5,3)}${star(10,2,1,.4)}${star(12,4,1,.9)}${star(12,7,1,0)}${star(10,9,1,.5)}</svg>`,
- es:`<svg class="flag" viewBox="0 0 30 20" preserveAspectRatio="none"><rect width="10" height="20" fill="#006847"/><rect x="10" width="10" height="20" fill="#fff"/><rect x="20" width="10" height="20" fill="#CE1126"/><ellipse cx="15" cy="10" rx="2.6" ry="2.3" fill="#8C5A1E"/><path d="M12.6 11.6q2.4 2.2 4.8 0" stroke="#3A7D2C" stroke-width=".8" fill="none"/></svg>`,
- en:`<svg class="flag" viewBox="0 0 30 20" preserveAspectRatio="none"><rect width="30" height="20" fill="#fff"/>${[0,2,4,6,8,10,12].map(i=>`<rect y="${(i*20/13).toFixed(2)}" width="30" height="${(20/13).toFixed(2)}" fill="#B22234"/>`).join('')}<rect width="13" height="10.77" fill="#3C3B6E"/>${[1,3,5,7,9].map(y=>[1.5,4,6.5,9,11.5].map(x=>`<circle cx="${x}" cy="${y}" r=".55" fill="#fff"/>`).join('')).join('')}</svg>`};
+const FLAG={zh:`<img class="flag" src="flags/cn.svg" alt="">`,es:`<img class="flag" src="flags/mx.svg" alt="">`,en:`<img class="flag" src="flags/us.svg" alt="">`};
 const LANGS=[['zh','中文'],['es','Español (MX)'],['en','English (US)']];
 let lang=store.get('gr_lang','es'); if(!L[lang])lang='es';
 const UI=k=>(L[lang].ui[k]||L.es.ui[k]||k);
